@@ -44,12 +44,20 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Vacuum Cleaner Pathfinding Visualizer (With Obstacles)")
 
 COLOR_BG, COLOR_GRID_BG = (30, 30, 40), (40, 40, 50)
-COLOR_WALL, COLOR_DIRT = (70, 70, 80), (200, 150, 80)
-COLOR_ROBOT, COLOR_CLEANED = (50, 150, 250), (50, 200, 120)
+COLOR_WALL = (70, 70, 80)
 COLOR_TEXT, COLOR_PANEL = (240, 240, 240), (45, 45, 55)
 COLOR_BTN, COLOR_BTN_ACTIVE = (60, 60, 80), (100, 100, 150)
 COLOR_LOG_BG = (20, 20, 25)
-COLOR_OBSTACLE = (100, 100, 110)
+COLOR_CLEANED = (50, 200, 120)
+
+HAS_IMAGES = True
+try:
+    IMG_ROBOT = pygame.image.load("Assets/robot.png")
+    IMG_DIRT = pygame.image.load("Assets/dirt.png")
+    IMG_OBSTACLE = pygame.image.load("Assets/obstacle.png")
+except pygame.error as e:
+    HAS_IMAGES = False
+    print(f"[Cảnh báo] Không tìm thấy file ảnh: {e}. Hệ thống sẽ dùng hình vẽ thay thế.")
 
 class Visualizer:
     def __init__(self):
@@ -254,22 +262,40 @@ class Visualizer:
         
         rx, ry, current_dirt = self.current_sim_state
         
+        if HAS_IMAGES:
+            scaled_robot = pygame.transform.scale(IMG_ROBOT, (cell_size - 10, cell_size - 10))
+            scaled_dirt = pygame.transform.scale(IMG_DIRT, (cell_size // 2, cell_size // 2))
+            scaled_obstacle = pygame.transform.scale(IMG_OBSTACLE, (cell_size, cell_size))
+
         for r in range(self.grid_m):
             for c in range(self.grid_n):
                 cx = self.grid_origin_x + c * cell_size
                 cy = self.grid_origin_y + r * cell_size
                 
                 if current_dirt[r][c] == 2:
-                    pygame.draw.rect(surface, COLOR_OBSTACLE, (cx, cy, cell_size, cell_size))
+                    if HAS_IMAGES:
+                        surface.blit(scaled_obstacle, (cx, cy))
+                    else:
+                        pygame.draw.rect(surface, (100, 100, 110), (cx, cy, cell_size, cell_size))
                 
                 pygame.draw.rect(surface, COLOR_WALL, (cx, cy, cell_size, cell_size), width=1)
                 
                 if current_dirt[r][c] == 1:
-                    rad = cell_size // 4
-                    pygame.draw.circle(surface, COLOR_DIRT, (cx + cell_size//2, cy + cell_size//2), rad)
+                    if HAS_IMAGES:
+                        dirt_x = cx + (cell_size - scaled_dirt.get_width()) // 2
+                        dirt_y = cy + (cell_size - scaled_dirt.get_height()) // 2
+                        surface.blit(scaled_dirt, (dirt_x, dirt_y))
+                    else:
+                        rad = cell_size // 4
+                        pygame.draw.circle(surface, (200, 150, 80), (cx + cell_size//2, cy + cell_size//2), rad)
                 
                 if r == rx and c == ry:
-                    pygame.draw.rect(surface, COLOR_ROBOT, (cx + 5, cy + 5, cell_size - 10, cell_size - 10), border_radius=5)
+                    if HAS_IMAGES:
+                        robot_x = cx + 5
+                        robot_y = cy + 5
+                        surface.blit(scaled_robot, (robot_x, robot_y))
+                    else:
+                        pygame.draw.rect(surface, (50, 150, 250), (cx + 5, cy + 5, cell_size - 10, cell_size - 10), border_radius=5)
 
         lbl_log = FONT_LG.render("LOG HOAT DONG:", True, COLOR_TEXT)
         surface.blit(lbl_log, (400, 120))
