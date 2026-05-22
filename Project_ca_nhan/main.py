@@ -61,8 +61,8 @@ except pygame.error as e:
 
 class Visualizer:
     def __init__(self):
-        self.grid_m = 4             
-        self.grid_n = 6             
+        self.grid_m = 3             
+        self.grid_n = 3             
         self.active_input = None    
         self.input_text = ""        
         
@@ -81,6 +81,9 @@ class Visualizer:
         self.grid_max_display_size = 300 
 
         self.logs = []
+        self.log_scroll_index = 0
+        self.log_panel_rect = pygame.Rect(400, 150, 460, 300)
+        
         self.final_result = None
         self.running_simulation = False
         self.sim_index = 0
@@ -90,6 +93,7 @@ class Visualizer:
 
     def reset_env(self):
         self.logs = ["Click ô lưới để vẽ VẬT CẢN"]
+        self.log_scroll_index = 0
         self.final_result = None
         self.running_simulation = False
         self.sim_index = 0
@@ -124,7 +128,8 @@ class Visualizer:
         path, algo_logs = algo_instance.solve(start_state)
         
         self.final_result = path if path is not None else "Khong tim thay duong di"
-        self.logs = algo_logs[-12:] 
+        self.logs = algo_logs 
+        self.log_scroll_index = 999999
         
         if path and isinstance(path, list):
             self.running_simulation = True
@@ -204,6 +209,13 @@ class Visualizer:
                         self.grid_data[row][col] = 2 if self.grid_data[row][col] != 2 else 0
                         self.reset_env()
 
+    def handle_scroll(self, button, mx, my):
+        if self.log_panel_rect.collidepoint(mx, my):
+            if button == 4:    # Lăn lên
+                self.log_scroll_index = max(0, self.log_scroll_index - 1)
+            elif button == 5:  # Lăn xuống
+                self.log_scroll_index += 1
+
     def handle_keydown(self, event):
         if not self.active_input:
             return
@@ -222,7 +234,7 @@ class Visualizer:
     def draw(self, surface):
         surface.fill(COLOR_BG)
         
-        lbl_size = FONT_LG.render("KICH THUOC M x N:", True, COLOR_TEXT)
+        lbl_size = FONT_LG.render("KICH THUOC", True, COLOR_TEXT)
         surface.blit(lbl_size, (420, 20))
         
         color_m = COLOR_BTN_ACTIVE if self.active_input == 'M' else COLOR_PANEL
@@ -297,18 +309,55 @@ class Visualizer:
                     else:
                         pygame.draw.rect(surface, (50, 150, 250), (cx + 5, cy + 5, cell_size - 10, cell_size - 10), border_radius=5)
 
-        lbl_log = FONT_LG.render("LOG HOAT DONG:", True, COLOR_TEXT)
+        lbl_log = FONT_LG.render("LOG:", True, COLOR_TEXT)
         surface.blit(lbl_log, (400, 120))
-        log_panel = pygame.Rect(400, 150, 460, 300)
-        pygame.draw.rect(surface, COLOR_LOG_BG, log_panel, border_radius=5)
-        pygame.draw.rect(surface, COLOR_WALL, log_panel, width=1, border_radius=5)
+        pygame.draw.rect(surface, COLOR_LOG_BG, self.log_panel_rect, border_radius=5)
+        pygame.draw.rect(surface, COLOR_WALL, self.log_panel_rect, width=1, border_radius=5)
         
-        for idx, log in enumerate(self.logs):
+        max_log_width = self.log_panel_rect.width - 30  
+        log_lines_pool = []                   
+
+        for log in self.logs:
             if HAS_FONT:
-                txt_log = FONT_SM.render(log, True, (200, 200, 200))
-                surface.blit(txt_log, (415, 160 + idx * 22))
+                words = log.split(' ')
+                current_line = ""
+                for word in words:
+                    test_line = current_line + word + " "
+                    if FONT_SM.size(test_line)[0] < max_log_width:
+                        current_line = test_line
+                    else:
+                        log_lines_pool.append(current_line)
+                        current_line = word + " "
+                if current_line:
+                    log_lines_pool.append(current_line)
             else:
-                pygame.draw.rect(surface, (100, 120, 100), (415, 165 + idx * 22, 300, 4))
+                log_lines_pool.append(log)
+
+        max_visible_lines = 12
+        total_lines = len(log_lines_pool)
+        
+        if total_lines <= max_visible_lines:
+            self.log_scroll_index = 0
+        else:
+            max_scroll = total_lines - max_visible_lines
+            self.log_scroll_index = min(self.log_scroll_index, max_scroll)
+
+        start_idx = self.log_scroll_index
+        end_idx = start_idx + max_visible_lines
+        display_lines = log_lines_pool[start_idx:end_idx]
+        
+        for idx, line_text in enumerate(display_lines):
+            if HAS_FONT:
+                txt_log = FONT_SM.render(line_text, True, (200, 200, 200))
+                surface.blit(txt_log, (self.log_panel_rect.x + 15, self.log_panel_rect.y + 12 + idx * 23))
+            else:
+                pygame.draw.rect(surface, (100, 120, 100), (self.log_panel_rect.x + 15, self.log_panel_rect.y + 15 + idx * 23, 300, 4))
+                
+        if total_lines > max_visible_lines:
+            scrollbar_h = max(20, int(self.log_panel_rect.height * (max_visible_lines / total_lines)))
+            scrollbar_y = self.log_panel_rect.y + 5 + int((self.log_panel_rect.height - scrollbar_h - 10) * (self.log_scroll_index / (total_lines - max_visible_lines)))
+            pygame.draw.rect(surface, (80, 80, 90), (self.log_panel_rect.right - 8, scrollbar_y, 4, scrollbar_h), border_radius=2)
+        # =============================================================================
 
         pygame.draw.rect(surface, COLOR_WALL, (30, 480, 840, 2))
         lbl_final = FONT_LG.render("DUONG DI:", True, COLOR_TEXT)
@@ -346,7 +395,7 @@ class Visualizer:
             txt_res = FONT_MD.render("Chua thuc hien...", True, (120, 120, 130))
             surface.blit(txt_res, (45, 565))
 
-        lbl_algo = FONT_LG.render("LIST CHON PHUONG PHAP:", True, COLOR_TEXT)
+        lbl_algo = FONT_LG.render("PHUONG PHAP", True, COLOR_TEXT)
         surface.blit(lbl_algo, (30, 20))
         
         pygame.draw.rect(surface, COLOR_BTN_ACTIVE if self.dropdown_open else COLOR_BTN, self.dropdown_rect, border_radius=5)
@@ -380,7 +429,10 @@ def main():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
-                visualizer.handle_click(mx, my)
+                if event.button in (4, 5):
+                    visualizer.handle_scroll(event.button, mx, my)
+                else:
+                    visualizer.handle_click(mx, my)
             elif event.type == pygame.KEYDOWN:
                 visualizer.handle_keydown(event)
                     
