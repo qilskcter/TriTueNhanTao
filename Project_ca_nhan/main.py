@@ -66,7 +66,7 @@ class Visualizer:
         self.active_input = None    
         self.input_text = ""        
         
-        self.grid_data = [[0 for _ in range(6)] for _ in range(4)]
+        self.grid_data = [[0 for _ in range(self.grid_n)] for _ in range(self.grid_m)]
         
         self.algorithms = list(ALG_MAP.keys())
         self.current_algo = self.algorithms[0]
