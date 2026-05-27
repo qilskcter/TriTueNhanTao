@@ -10,15 +10,15 @@
 
 ## Supported Algorithms
 
--  [BFS (Breadth-First Search)](/algorithms/bfs.py)
--  [BFS Early Goal Check](/algorithms/bfs_early.py)
--  [DFS (Depth-First Search)](/algorithms/dfs.py)
--  [DFS Early Goal Check](/algorithms/dfs_early.py)
--  [Greedy](/algorithms/greedy.py)
--  [IDS (Iterative Deepening Search)](/algorithms/ids.py)
--  [IDS Early Goal Check](/algorithms/ids_early.py)
--  [UCS (Uniform Cost Search)](/algorithms/ucs.py)
--  [A* (A-star)](/algorithms/A_star.py)
+-  [BFS (Breadth-First Search)](./algorithms/bfs.py)
+-  [BFS Early Goal Check](./algorithms/bfs_early.py)
+-  [DFS (Depth-First Search)](./algorithms/dfs.py)
+-  [DFS Early Goal Check](./algorithms/dfs_early.py)
+-  [Greedy](./algorithms/greedy.py)
+-  [IDS (Iterative Deepening Search)](./algorithms/ids.py)
+-  [IDS Early Goal Check](./algorithms/ids_early.py)
+-  [UCS (Uniform Cost Search)](./algorithms/ucs.py)
+-  [A* (A-star)](./algorithms/A_star.py)
 
 ## Requirements
 
