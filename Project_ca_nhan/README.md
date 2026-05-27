@@ -1,4 +1,4 @@
-# <h1 style="text-align: center;"> Vacuum Cleaner Visualizer </h1>
+# <center>Vacuum Cleaner Visualizer</center>
 
 ![Python](https://img.shields.io/badge/Python-3.9.6-3776AB?logo=python&logoColor=white)
 ![Pygame](https://img.shields.io/badge/Pygame-355938?logo=pygame&logoColor=white)
