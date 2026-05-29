@@ -7,6 +7,10 @@ from .ids_early import IDS_EARLY
 from .ucs import UCS
 from .greedy import Greedy
 from .A_star import AStar
+from .ida_star import IDAStar
+from .simplehillclimbing import SimpleHillClimbing
+from .steepestascenthillclimbing import SteepestAscentHillClimbing
+from .stochastichillclimbing import StochasticHillClimbing
 
 ALG_MAP = {
     "BFS": BFS(),
@@ -18,4 +22,8 @@ ALG_MAP = {
     "UCS": UCS(),
     "Greedy": Greedy(),
     "A*": AStar(),
+    "IDA*": IDAStar(),
+    "Simple HC": SimpleHillClimbing(),
+    "Steepest Ascent HC": SteepestAscentHillClimbing(),
+    "Stochastic HC": StochasticHillClimbing()
 }

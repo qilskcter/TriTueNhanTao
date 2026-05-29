@@ -10,15 +10,27 @@
 
 ## Supported Algorithms
 
+1. Uninformed Search
+
 -  [BFS (Breadth-First Search)](./algorithms/bfs.py)
 -  [BFS Early Goal Check](./algorithms/bfs_early.py)
 -  [DFS (Depth-First Search)](./algorithms/dfs.py)
 -  [DFS Early Goal Check](./algorithms/dfs_early.py)
--  [Greedy](./algorithms/greedy.py)
 -  [IDS (Iterative Deepening Search)](./algorithms/ids.py)
 -  [IDS Early Goal Check](./algorithms/ids_early.py)
 -  [UCS (Uniform Cost Search)](./algorithms/ucs.py)
+
+2. Informed Search
+
+-  [Greedy](./algorithms/greedy.py)
 -  [A* (A-star)](./algorithms/A_star.py)
+-  [IDA* (IDA-star)](./algorithms/ida_star.py)
+
+3. Local Search
+
+-  [Simple Hill Climbing](./algorithms/simplehillclimbing.py)
+-  [Steepest Ascent Hill Climbing](./algorithms/steepestascenthillclimbing.py)
+-  [Stochastic Hill Climbing](./algorithms/stochastichillclimbing.py)
 
 ## Requirements
 
@@ -55,8 +67,12 @@ Project_ca_nhan
 │   ├── dfs.py
 │   ├── dfs_early.py
 │   ├── greedy.py
+│   ├── ida_star.py
 │   ├── ids.py
 │   ├── ids_early.py
+│   ├── simplehillclimbing.py
+│   ├── steepestascenthillclimbing.py
+│   ├── stochastichillclimbing.py
 │   └── ucs.py
 └── main.py
 ```
