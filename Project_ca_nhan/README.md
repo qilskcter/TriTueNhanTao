@@ -31,6 +31,7 @@
 -  [Simple Hill Climbing](./algorithms/simplehillclimbing.py)
 -  [Steepest Ascent Hill Climbing](./algorithms/steepestascenthillclimbing.py)
 -  [Stochastic Hill Climbing](./algorithms/stochastichillclimbing.py)
+-  [Random Restart Hill Climbing](./algorithms/randomrestarthillclimbing.py)
 
 ## Requirements
 

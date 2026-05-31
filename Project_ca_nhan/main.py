@@ -73,6 +73,11 @@ class Visualizer:
         self.dropdown_open = False
         self.dropdown_rect = pygame.Rect(30, 60, 220, 40)
         
+        self.dropdown_scroll_index = 0
+        self.dropdown_max_visible = 4  
+        self.dropdown_item_h = 40
+        self.dropdown_panel_rect = pygame.Rect(30, 100, 220, self.dropdown_max_visible * self.dropdown_item_h)
+        
         self.box_m_rect = pygame.Rect(420, 60, 45, 40)
         self.box_n_rect = pygame.Rect(500, 60, 45, 40)
         
@@ -164,14 +169,23 @@ class Visualizer:
             return
 
         if self.dropdown_open:
-            for i in range(len(self.algorithms)):
-                item_rect = pygame.Rect(self.dropdown_rect.x, self.dropdown_rect.y + (i + 1) * 40, self.dropdown_rect.width, 40)
+            visible_count = min(self.dropdown_max_visible, len(self.algorithms))
+            for i in range(visible_count):
+                algo_idx = self.dropdown_scroll_index + i
+                item_rect = pygame.Rect(
+                    self.dropdown_rect.x, 
+                    self.dropdown_rect.y + (i + 1) * self.dropdown_item_h, 
+                    self.dropdown_rect.width, 
+                    self.dropdown_item_h
+                )
                 if item_rect.collidepoint(mx, my):
-                    self.current_algo = self.algorithms[i]
+                    self.current_algo = self.algorithms[algo_idx]
                     self.dropdown_open = False
                     self.reset_env()
                     return
-            self.dropdown_open = False
+            
+            if not self.dropdown_panel_rect.collidepoint(mx, my):
+                self.dropdown_open = False
 
         if not self.running_simulation:
             if self.box_m_rect.collidepoint(mx, my):
@@ -211,10 +225,17 @@ class Visualizer:
 
     def handle_scroll(self, button, mx, my):
         if self.log_panel_rect.collidepoint(mx, my):
-            if button == 4:    # Lăn lên
+            if button == 4:    
                 self.log_scroll_index = max(0, self.log_scroll_index - 1)
-            elif button == 5:  # Lăn xuống
+            elif button == 5:  
                 self.log_scroll_index += 1
+                
+        elif self.dropdown_open and (self.dropdown_rect.collidepoint(mx, my) or self.dropdown_panel_rect.collidepoint(mx, my)):
+            max_scroll = max(0, len(self.algorithms) - self.dropdown_max_visible)
+            if button == 4:
+                self.dropdown_scroll_index = max(0, self.dropdown_scroll_index - 1)
+            elif button == 5:
+                self.dropdown_scroll_index = min(max_scroll, self.dropdown_scroll_index + 1)
 
     def handle_keydown(self, event):
         if not self.active_input:
@@ -357,7 +378,6 @@ class Visualizer:
             scrollbar_h = max(20, int(self.log_panel_rect.height * (max_visible_lines / total_lines)))
             scrollbar_y = self.log_panel_rect.y + 5 + int((self.log_panel_rect.height - scrollbar_h - 10) * (self.log_scroll_index / (total_lines - max_visible_lines)))
             pygame.draw.rect(surface, (80, 80, 90), (self.log_panel_rect.right - 8, scrollbar_y, 4, scrollbar_h), border_radius=2)
-        # =============================================================================
 
         pygame.draw.rect(surface, COLOR_WALL, (30, 480, 840, 2))
         lbl_final = FONT_LG.render("DUONG DI:", True, COLOR_TEXT)
@@ -410,13 +430,43 @@ class Visualizer:
             pygame.draw.circle(surface, COLOR_CLEANED, (self.dropdown_rect.x + 20, self.dropdown_rect.y + 20), 6)
 
         if self.dropdown_open:
-            for i, algo in enumerate(self.algorithms):
-                item_rect = pygame.Rect(self.dropdown_rect.x, self.dropdown_rect.y + (i + 1) * 40, self.dropdown_rect.width, 40)
-                pygame.draw.rect(surface, (55, 55, 65), item_rect)
-                pygame.draw.rect(surface, COLOR_WALL, item_rect, width=1)
+            total_algos = len(self.algorithms)
+            visible_count = min(self.dropdown_max_visible, total_algos)
+            
+            start_idx = self.dropdown_scroll_index
+            end_idx = start_idx + visible_count
+            display_algos = self.algorithms[start_idx:end_idx]
+
+            pygame.draw.rect(surface, (40, 40, 50), self.dropdown_panel_rect, border_radius=5)
+            pygame.draw.rect(surface, COLOR_WALL, self.dropdown_panel_rect, width=1, border_radius=5)
+
+            for i, algo in enumerate(display_algos):
+                item_rect = pygame.Rect(
+                    self.dropdown_rect.x, 
+                    self.dropdown_rect.y + (i + 1) * self.dropdown_item_h, 
+                    self.dropdown_rect.width, 
+                    self.dropdown_item_h
+                )
+                
+                mx, my = pygame.mouse.get_pos()
+                if item_rect.collidepoint(mx, my):
+                    pygame.draw.rect(surface, (70, 70, 90), item_rect)
+                else:
+                    pygame.draw.rect(surface, (55, 55, 65), item_rect)
+                    
+                pygame.draw.rect(surface, (45, 45, 55), item_rect, width=1)
+                
                 if HAS_FONT:
                     txt_item = FONT_MD.render(algo, True, COLOR_TEXT)
                     surface.blit(txt_item, (item_rect.x + 10, item_rect.y + 7))
+
+            if total_algos > self.dropdown_max_visible:
+                panel_h = self.dropdown_panel_rect.height
+                scrollbar_h = max(15, int(panel_h * (self.dropdown_max_visible / total_algos)))
+                max_scroll_slots = total_algos - self.dropdown_max_visible
+                scrollbar_y = self.dropdown_panel_rect.y + int((panel_h - scrollbar_h) * (self.dropdown_scroll_index / max_scroll_slots))
+                
+                pygame.draw.rect(surface, COLOR_CLEANED, (self.dropdown_panel_rect.right - 6, scrollbar_y, 4, scrollbar_h), border_radius=2)
 
 def main():
     clock = pygame.time.Clock()
