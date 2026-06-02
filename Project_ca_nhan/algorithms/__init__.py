@@ -12,6 +12,7 @@ from .simplehillclimbing import SimpleHillClimbing
 from .steepestascenthillclimbing import SteepestAscentHillClimbing
 from .stochastichillclimbing import StochasticHillClimbing
 from .randomrestarthillclimbing import RandomRestartHillClimbing
+from .localbeamsearch import LocalBeamSearch
 
 ALG_MAP = {
     "BFS": BFS(),
@@ -28,4 +29,5 @@ ALG_MAP = {
     "Steepest Ascent HC": SteepestAscentHillClimbing(),
     "Stochastic HC": StochasticHillClimbing(),
     "Random Restart HC": RandomRestartHillClimbing(),
+    "Local Beam Search": LocalBeamSearch(),
 }
