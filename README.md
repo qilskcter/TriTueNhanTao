@@ -236,6 +236,56 @@ $$
 
 ---
 
+## Local Beam Search
+
+Thuật toán tìm kiếm chùm cục bộ mở rộng từ Hill Climbing bằng cách duy trì và theo dõi đồng thời $k$ trạng thái thay vì chỉ một trạng thái duy nhất.
+
+### Hàm đánh giá
+
+$$f(n) = h(n)$$
+
+Trong đó:
+
+* $h(n)$ biểu diễn chi phí ước lượng (ví dụ: số lượng vết bụi còn lại trên cấu trúc lưới).
+
+### Nguyên lý hoạt động
+
+1. Khởi tạo một tập hợp gồm $k$ trạng thái xuất phát ngẫu nhiên.
+2. Tại mỗi bước lặp, sinh ra toàn bộ các trạng thái lân cận (neighbors) của tất cả $k$ trạng thái hiện tại.
+3. Kiểm tra xem có trạng thái nào đạt mục tiêu hay chưa. Nếu có, kết thúc và trả về đường đi.
+4. Nếu chưa đạt mục tiêu, sắp xếp toàn bộ các trạng thái lân cận này theo thứ tự độ tốt tăng dần của hàm mục tiêu và chọn ra $k$ trạng thái tốt nhất để làm chùm (beam) mới cho bước tiếp theo.
+
+### Đặc điểm
+
+* Hiệu quả hơn Hill Climbing thông thường nhờ chia sẻ thông tin giữa các luồng tìm kiếm song song.
+* Tiết kiệm bộ nhớ hơn các thuật toán duyệt đồ thị toàn cục (như A* hay BFS) do giới hạn không gian lưu trữ cố định theo tham số $k$.
+* Vẫn có khả năng bị kẹt vào tối ưu cục bộ nếu tất cả $k$ trạng thái cùng hội tụ về một vùng đỉnh hẹp.
+
+---
+
+## Simulated Annealing
+
+Thuật toán mô phỏng luyện kim kết hợp giữa tìm kiếm leo đồi (Hill Climbing) và bước đi ngẫu nhiên (Random Walk) dựa trên nguyên lý hạ nhiệt vật lý của kim loại nhằm tìm kiếm tối ưu toàn cục.
+
+### Hàm đánh giá và điều kiện dịch chuyển
+
+$$\Delta = h(\text{next state}) - h(\text{current state})$$
+
+* Nếu $\Delta < 0$ (trạng thái kế tiếp tốt hơn): Thuật toán luôn chấp nhận dịch chuyển sang trạng thái mới.
+* Nếu $\Delta \ge 0$ (trạng thái kế tiếp tệ hơn): Thuật toán chấp nhận dịch chuyển với một xác suất $p$:
+
+$$p = e^{-\frac{\Delta}{T}}$$
+
+Trong đó:
+
+* $T$ là nhiệt độ hiện tại của hệ thống, giảm dần sau mỗi bước theo hệ số hạ nhiệt $\alpha$ ($T = \alpha \times T$).
+
+### Đặc điểm
+
+* **Khả năng thoát bẫy cực tốt:** Việc chấp nhận các bước đi tệ hơn với xác suất $p$ giúp robot dễ dàng vượt qua các hố lồi/lõm của tối ưu cục bộ để hướng tới tối ưu toàn cục.
+* **Quỹ đạo đường đi dài:** Do tính chất ngẫu nhiên cao khi chọn neighbor (`random.choice`) và chấp nhận rủi ro khi nhiệt độ $T$ còn cao, đường đi tìm kiếm thu được thường có xu hướng dài, loằng ngoằng và lặp lại trước khi hội tụ về đích.
+* Kết quả phụ thuộc lớn vào việc cấu hình các tham số ban đầu như nhiệt độ gốc $T_0$, ngưỡng dừng $T_{\min}$ và tốc độ giảm nhiệt $\alpha$.
+
 # Tổng kết
 
 Repository này đóng vai trò như một bộ sưu tập thực hành các giải thuật AI cơ bản, giúp:

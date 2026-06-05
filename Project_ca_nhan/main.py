@@ -93,12 +93,17 @@ class Visualizer:
         self.running_simulation = False
         self.sim_index = 0
         self.current_sim_state = None
+        
+        self.path_scroll_index = 0
+        self.path_panel_rect = pygame.Rect(30, 535, 840, 90)
+        
         self.randomize_dirt()
         self.reset_env()
 
     def reset_env(self):
         self.logs = ["Click ô lưới để vẽ VẬT CẢN"]
         self.log_scroll_index = 0
+        self.path_scroll_index = 0
         self.final_result = None
         self.running_simulation = False
         self.sim_index = 0
@@ -124,6 +129,7 @@ class Visualizer:
     def run_algorithm(self):
         self.running_simulation = False
         self.sim_index = 0
+        self.path_scroll_index = 0
         
         tuple_grid = tuple(tuple(row) for row in self.grid_data)
         start_state = (0, 0, tuple_grid)
@@ -230,6 +236,12 @@ class Visualizer:
             elif button == 5:  
                 self.log_scroll_index += 1
                 
+        elif self.path_panel_rect.collidepoint(mx, my):
+            if button == 4:
+                self.path_scroll_index = max(0, self.path_scroll_index - 1)
+            elif button == 5:
+                self.path_scroll_index += 1
+
         elif self.dropdown_open and (self.dropdown_rect.collidepoint(mx, my) or self.dropdown_panel_rect.collidepoint(mx, my)):
             max_scroll = max(0, len(self.algorithms) - self.dropdown_max_visible)
             if button == 4:
@@ -383,9 +395,8 @@ class Visualizer:
         lbl_final = FONT_LG.render("DUONG DI:", True, COLOR_TEXT)
         surface.blit(lbl_final, (30, 500))
         
-        res_box = pygame.Rect(30, 535, 840, 90)
-        pygame.draw.rect(surface, COLOR_PANEL, res_box, border_radius=5)
-        pygame.draw.rect(surface, COLOR_WALL, res_box, width=1, border_radius=5)
+        pygame.draw.rect(surface, COLOR_PANEL, self.path_panel_rect, border_radius=5)
+        pygame.draw.rect(surface, COLOR_WALL, self.path_panel_rect, width=1, border_radius=5)
         
         if self.final_result is not None:
             if HAS_FONT:
@@ -395,25 +406,42 @@ class Visualizer:
                     full_string = str(self.final_result)
 
                 words = full_string.split(' ')
-                lines = []
+                path_lines_pool = []
                 current_line = ""
-                max_w = 810
+                max_w = self.path_panel_rect.width - 30
                 for word in words:
                     test_line = current_line + word + " "
                     if FONT_MD.size(test_line)[0] < max_w:
                         current_line = test_line
                     else:
-                        lines.append(current_line)
+                        path_lines_pool.append(current_line)
                         current_line = word + " "
-                lines.append(current_line)
+                path_lines_pool.append(current_line)
                 
-                for line_idx, line_text in enumerate(lines):
-                    if line_idx < 3:
-                        txt_line = FONT_MD.render(line_text, True, COLOR_CLEANED)
-                        surface.blit(txt_line, (45, 545 + line_idx * 24))
+                max_visible_path_lines = 3
+                total_path_lines = len(path_lines_pool)
+                
+                if total_path_lines <= max_visible_path_lines:
+                    self.path_scroll_index = 0
+                else:
+                    max_path_scroll = total_path_lines - max_visible_path_lines
+                    self.path_scroll_index = min(self.path_scroll_index, max_path_scroll)
+
+                start_p_idx = self.path_scroll_index
+                end_p_idx = start_p_idx + max_visible_path_lines
+                display_path_lines = path_lines_pool[start_p_idx:end_p_idx]
+
+                for line_idx, line_text in enumerate(display_path_lines):
+                    txt_line = FONT_MD.render(line_text, True, COLOR_CLEANED)
+                    surface.blit(txt_line, (self.path_panel_rect.x + 15, self.path_panel_rect.y + 10 + line_idx * 24))
+
+                if total_path_lines > max_visible_path_lines:
+                    p_scrollbar_h = max(15, int(self.path_panel_rect.height * (max_visible_path_lines / total_path_lines)))
+                    p_scrollbar_y = self.path_panel_rect.y + 5 + int((self.path_panel_rect.height - p_scrollbar_h - 10) * (self.path_scroll_index / (total_path_lines - max_visible_path_lines)))
+                    pygame.draw.rect(surface, (80, 80, 90), (self.path_panel_rect.right - 8, p_scrollbar_y, 4, p_scrollbar_h), border_radius=2)
         else:
             txt_res = FONT_MD.render("Chua thuc hien...", True, (120, 120, 130))
-            surface.blit(txt_res, (45, 565))
+            surface.blit(txt_res, (self.path_panel_rect.x + 15, self.path_panel_rect.y + 30))
 
         lbl_algo = FONT_LG.render("PHUONG PHAP", True, COLOR_TEXT)
         surface.blit(lbl_algo, (30, 20))

@@ -32,6 +32,8 @@
 -  [Steepest Ascent Hill Climbing](./algorithms/steepestascenthillclimbing.py)
 -  [Stochastic Hill Climbing](./algorithms/stochastichillclimbing.py)
 -  [Random Restart Hill Climbing](./algorithms/randomrestarthillclimbing.py)
+-  [Local Beam Search](./algorithms/localbeamsearch.py)
+-  [Simulate Dannealing](./algorithms/simulatedannealing.py)
 
 ## Requirements
 
