@@ -73,7 +73,10 @@ Project_ca_nhan
 │   ├── ida_star.py
 │   ├── ids.py
 │   ├── ids_early.py
+│   ├── localbeamsearch.py
+│   ├── randomrestarthillclimbing.py
 │   ├── simplehillclimbing.py
+│   ├── simulatedannealing.py
 │   ├── steepestascenthillclimbing.py
 │   ├── stochastichillclimbing.py
 │   └── ucs.py
