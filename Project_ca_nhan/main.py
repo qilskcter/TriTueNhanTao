@@ -130,18 +130,22 @@ class Visualizer:
         self.running_simulation = False
         self.sim_index = 0
         self.path_scroll_index = 0
-        
+
         tuple_grid = tuple(tuple(row) for row in self.grid_data)
         start_state = (0, 0, tuple_grid)
-        self.current_sim_state = start_state
-        
+
         algo_instance = ALG_MAP[self.current_algo]
         path, algo_logs = algo_instance.solve(start_state)
-        
+
+        if hasattr(algo_instance, "start_state_used") and algo_instance.start_state_used is not None:
+            self.current_sim_state = algo_instance.start_state_used
+        else:
+            self.current_sim_state = start_state
+
         self.final_result = path if path is not None else "Khong tim thay duong di"
-        self.logs = algo_logs 
+        self.logs = algo_logs
         self.log_scroll_index = 999999
-        
+
         if path and isinstance(path, list):
             self.running_simulation = True
 

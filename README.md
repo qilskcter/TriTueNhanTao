@@ -286,6 +286,34 @@ Trong đó:
 * **Quỹ đạo đường đi dài:** Do tính chất ngẫu nhiên cao khi chọn neighbor (`random.choice`) và chấp nhận rủi ro khi nhiệt độ $T$ còn cao, đường đi tìm kiếm thu được thường có xu hướng dài, loằng ngoằng và lặp lại trước khi hội tụ về đích.
 * Kết quả phụ thuộc lớn vào việc cấu hình các tham số ban đầu như nhiệt độ gốc $T_0$, ngưỡng dừng $T_{\min}$ và tốc độ giảm nhiệt $\alpha$.
 
+## Tìm kiếm trong môi trường không nhìn thấy (Search in Unobservable Environments)
+
+Tìm kiếm trong môi trường không nhìn thấy là bài toán mà tác nhân (agent) không thể quan sát trực tiếp trạng thái hiện tại của môi trường. Agent không nhận được bất kỳ thông tin cảm biến nào về vị trí của mình hoặc kết quả của các hành động đã thực hiện. Vì vậy, agent phải dựa vào lịch sử hành động và kiến thức nội tại để suy luận về các trạng thái có thể xảy ra của môi trường.
+
+### Đặc điểm
+
+* Agent không thể quan sát trạng thái hiện tại của môi trường.
+* Không biết chính xác kết quả sau khi thực hiện hành động.
+* Một hành động có thể dẫn đến nhiều trạng thái khả dĩ mà agent không thể phân biệt được.
+* Agent thường phải duy trì một tập các trạng thái có thể xảy ra (Belief State) thay vì một trạng thái xác định duy nhất.
+
+### Ví dụ
+
+Một robot được đặt trong mê cung nhưng toàn bộ cảm biến đều bị vô hiệu hóa:
+
+* Không có camera.
+* Không có GPS.
+* Không có cảm biến khoảng cách.
+
+Robot vẫn có thể thực hiện các hành động như đi lên, xuống, trái hoặc phải, nhưng không thể xác định mình đang ở vị trí nào hoặc hành động vừa thực hiện có thành công hay không.
+
+### Ứng dụng
+
+* Điều hướng trong môi trường bị mất cảm biến.
+* Lập kế hoạch dưới điều kiện thiếu thông tin hoàn toàn.
+* Các hệ thống tự hành có khả năng chịu lỗi.
+* Nghiên cứu các bài toán tìm kiếm dựa trên Belief State.
+
 # Tổng kết
 
 Repository này đóng vai trò như một bộ sưu tập thực hành các giải thuật AI cơ bản, giúp:

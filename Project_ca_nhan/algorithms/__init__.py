@@ -14,6 +14,7 @@ from .stochastichillclimbing import StochasticHillClimbing
 from .randomrestarthillclimbing import RandomRestartHillClimbing
 from .localbeamsearch import LocalBeamSearch
 from .simulatedannealing import SimulatedAnnealing
+from .bfs_partial_early import BFS_PARTIAL_EARLY
 
 ALG_MAP = {
     "BFS": BFS(),
@@ -32,4 +33,5 @@ ALG_MAP = {
     "Random Restart HC": RandomRestartHillClimbing(),
     "Local Beam Search": LocalBeamSearch(),
     "Simulated Annealing": SimulatedAnnealing(),
+    "BFS Partial Early": BFS_PARTIAL_EARLY(),
 }

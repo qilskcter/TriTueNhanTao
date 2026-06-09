@@ -35,6 +35,10 @@
 -  [Local Beam Search](./algorithms/localbeamsearch.py)
 -  [Simulate Dannealing](./algorithms/simulatedannealing.py)
 
+4. Search in Complex Environments
+
+-  [Search in Unobservable Environments](./algorithms/bfs_partial_early.py)
+
 ## Requirements
 
 - Python 3.8+
@@ -67,6 +71,7 @@ Project_ca_nhan
 │   ├── base.py
 │   ├── bfs.py
 │   ├── bfs_early.py
+│   ├── bfs_partial_early.py
 │   ├── dfs.py
 │   ├── dfs_early.py
 │   ├── greedy.py
