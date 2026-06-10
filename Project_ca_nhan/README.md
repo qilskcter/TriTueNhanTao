@@ -37,8 +37,9 @@
 
 4. Search in Complex Environments
 
--  [Search in Unobservable Environments](./algorithms/bfs_partial_early.py)
-
+-  [Search in Partially Observable Environments](./algorithms/bfs_partial_early.py)
+-  [Search in Unobservable Environments](./algorithms/bfs_unobservable.py)
+-  [Search in Nondeterministic Environments](./algorithms/bfs_nondeterministic.py)
 ## Requirements
 
 - Python 3.8+
