@@ -40,6 +40,7 @@
 -  [Search in Partially Observable Environments](./algorithms/bfs_partial_early.py)
 -  [Search in Unobservable Environments](./algorithms/bfs_unobservable.py)
 -  [Search in Nondeterministic Environments](./algorithms/bfs_nondeterministic.py)
+-  [And Or Graph Search](./algorithms/andorsearch.py)
 ## Requirements
 
 - Python 3.8+
