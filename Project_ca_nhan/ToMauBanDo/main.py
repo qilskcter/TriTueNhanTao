@@ -10,8 +10,10 @@ from matplotlib.collections import PatchCollection
 
 from shapely.geometry import Polygon
 
-from backtracking import BacktrackingSolver
-from forward_checking import ForwardCheckingSolver
+from algorithms.backtracking import BacktrackingSolver
+from algorithms.forward_checking import ForwardCheckingSolver
+from algorithms.min_conflicts import MinConflictsSolver
+from algorithms.ac3 import AC3Solver
 
 
 PROVINCE_FILE = "./DATA/provNew.geojson"
@@ -174,6 +176,20 @@ class MapColoringApp:
             value="fc"
         ).pack(anchor="w")
 
+        tk.Radiobutton(
+            menu_frame,
+            text="Min-Conflicts",
+            variable=self.algorithm_var,
+            value="mc"
+        ).pack(anchor="w")
+
+        tk.Radiobutton(
+            menu_frame,
+            text="AC-3",
+            variable=self.algorithm_var,
+            value="ac3"
+        ).pack(anchor="w")
+
         button_frame = tk.Frame(right_frame)
         button_frame.pack(fill=tk.X, pady=5)
 
@@ -226,13 +242,30 @@ class MapColoringApp:
                 self.neighbors
             )
             algo_name = "Backtracking thường"
-        else:
+
+        elif self.algorithm_var.get() == "fc":
             self.solver = ForwardCheckingSolver(
                 len(self.ward_polygons),
                 self.ward_names,
                 self.neighbors
             )
             algo_name = "Backtracking + Forward Checking"
+
+        elif self.algorithm_var.get() == "mc":
+            self.solver = MinConflictsSolver(
+                len(self.ward_polygons),
+                self.ward_names,
+                self.neighbors
+            )
+            algo_name = "Min-Conflicts"
+
+        else:
+            self.solver = AC3Solver(
+                len(self.ward_polygons),
+                self.ward_names,
+                self.neighbors
+            )
+            algo_name = "AC-3"
 
         self.generator = self.solver.solve_generator()
         self.running = False
@@ -269,7 +302,112 @@ class MapColoringApp:
         if len(step) > 4:
             removed_list = step[4]
 
-        if action == "choose":
+        if action == "init":
+            self.log("Khởi tạo ngẫu nhiên assignment ban đầu:")
+            self.log(self.assignment_to_text())
+
+        elif action == "ac3_init":
+            queue = step[4]
+            self.log("AC-3")
+            self.log("B1: Khởi tạo Queue chứa tất cả các cung")
+            self.log(f"Số cung ban đầu: {len(queue)}")
+            self.log("")
+
+        elif action == "ac3_check":
+            xj = color
+            self.log(
+                f"- Xét cung ({self.ward_names[ward_index]}, "
+                f"{self.ward_names[xj]})"
+            )
+
+        elif action == "ac3_remove":
+            xj = color
+            removed = step[4]
+            domains = step[5]
+
+            for value in removed:
+                self.log(
+                    f"  Xóa màu {value} khỏi Domain({self.ward_names[ward_index]})"
+                )
+
+            self.log(
+                f"  Domain({self.ward_names[ward_index]}) mới = "
+                f"{domains[ward_index]}"
+            )
+
+        elif action == "ac3_add":
+            xi = ward_index
+            xj = color
+            self.log(
+                f"  Thêm cung ({self.ward_names[xi]}, "
+                f"{self.ward_names[xj]}) vào Queue"
+            )
+
+        elif action == "ac3_done":
+            self.log("AC-3 hoàn tất.")
+            self.log("Bắt đầu Backtracking trên domain sau AC-3.")
+            self.log("")
+
+        elif action == "mc_init":
+            self.log("Bước 1. Khởi tạo lời giải ban đầu ngẫu nhiên")
+            self.log(self.assignment_to_text())
+            self.log("")
+
+        elif action == "mc_check":
+            conflict_pairs = step[4]
+            self.log("Kiểm tra ràng buộc")
+
+            if not conflict_pairs:
+                self.log("Không còn xung đột nào.")
+            else:
+                for a, b in conflict_pairs:
+                    self.log(
+                        f"{self.ward_names[a]} = {self.ward_names[b]} "
+                        f"→ vi phạm ({self.assignment[a]} = {self.assignment[b]})"
+                    )
+
+                self.log(f"Như vậy, có {len(conflict_pairs)} xung đột.")
+            self.log("")
+
+        elif action == "mc_choose":
+            conflict_pairs = step[4]
+            self.log("Bước 2. Chọn một biến gây xung đột")
+            self.log(f"Chọn ngẫu nhiên biến: {self.ward_names[ward_index]}")
+            self.log("")
+
+        elif action == "mc_try_all":
+            color_results = step[4]
+
+            self.log("Bước 3. Thử tất cả màu trong miền để giảm xung đột")
+
+            for test_color, conflict_count in color_results:
+                if conflict_count == 0:
+                    self.log(
+                        f"{self.ward_names[ward_index]} = {test_color} "
+                        f"→ không còn xung đột"
+                    )
+                else:
+                    self.log(
+                        f"{self.ward_names[ward_index]} = {test_color} "
+                        f"→ còn {conflict_count} xung đột"
+                    )
+
+            self.log(
+                f"Như vậy, chọn giá trị tốt nhất để gán cho "
+                f"{self.ward_names[ward_index]} là {color}."
+            )
+            self.log("")
+
+        elif action == "mc_update":
+            self.log("Bước 4. Cập nhật lời giải")
+            self.log(
+                f"Gán lại: {self.ward_names[ward_index]} = {color}"
+            )
+            self.log(self.assignment_to_text())
+            self.log("LẶP LẠI kiểm tra ràng buộc")
+            self.log("")
+
+        elif action == "choose":
             self.log(f"Chọn biến: {self.ward_names[ward_index]}")
 
         elif action == "try":

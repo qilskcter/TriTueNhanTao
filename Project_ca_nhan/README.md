@@ -1,12 +1,16 @@
-# <center>Vacuum Cleaner Visualizer</center>
+# <center>Project Cá Nhân</center>
 
-![Python](https://img.shields.io/badge/Python-3.9.6-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.14.3-3776AB?logo=python&logoColor=white)
 ![Pygame](https://img.shields.io/badge/Pygame-355938?logo=pygame&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-UPDATING-yellow)
 
 ## Github Link
 
 [Artificial Intelligence - Nguyen Dinh Khanh](https://github.com/qilskcter/TriTueNhanTao)
+
+## Source Code
+- [Vacuum Cleaner](./VacuumCleaner/)
+- [Tô Màu Bản Đồ](./ToMauBanDo/)
 
 ## Supported Algorithms
 
@@ -41,59 +45,76 @@
 -  [Search in Unobservable Environments](./algorithms/bfs_unobservable.py)
 -  [Search in Nondeterministic Environments](./algorithms/bfs_nondeterministic.py)
 -  [And Or Graph Search](./algorithms/andorsearch.py)
+
+5. Constraint Satisfaction Problem (CSP)
+
+-  [Backtracking](./algorithms/backtracking.py)
+-  [Forward-Checking](./algorithms/forward_checking.py)
+-  [AC-3](./algorithms/ac3.py)
+-  [Min Conflict](./algorithms/min_conflicts.py)
+
 ## Requirements
 
-- Python 3.8+
+- Python 3.x
 - Pygame
-
-> [!WARNING]
-> ### Python & Pygame Compatibility Note
-> Running this project with an experimental or too high Python version (e.g., **Python 3.14+**) may cause Pygame to behave unexpectedly or fail to render the graphical interface properly due to library compatibility issues.
-> 
-> To ensure a smooth and stable simulation, it is highly recommended to use:
-> - **Python:** `3.8` up to `3.12`
-> - **Pygame:** `2.5.0` or higher
-> 
-> If you encounter any initialization or rendering errors, please verify your Python version using `python --version` and consider downgrading to a stable release.
+- Tkinter
 
 ## Project Structure
 
 ```
 Project_ca_nhan
-├── Assets
-│   ├── demo.gif
-│   ├── dirt.png
-│   ├── obstacle.png
-│   └── robot.png
 ├── LinkGithub.txt
 ├── README.md
-├── algorithms
-│   ├── A_star.py
-│   ├── __init__.py
-│   ├── base.py
-│   ├── bfs.py
-│   ├── bfs_early.py
-│   ├── bfs_nondeterministic.py
-│   ├── bfs_partial_early.py
-│   ├── bfs_unobservable.py
-│   ├── dfs.py
-│   ├── dfs_early.py
-│   ├── greedy.py
-│   ├── ida_star.py
-│   ├── ids.py
-│   ├── ids_early.py
-│   ├── localbeamsearch.py
-│   ├── randomrestarthillclimbing.py
-│   ├── simplehillclimbing.py
-│   ├── simulatedannealing.py
-│   ├── steepestascenthillclimbing.py
-│   ├── stochastichillclimbing.py
-│   └── ucs.py
-└── main.py
+├── ToMauBanDo
+│   ├── DATA
+│   │   ├── Wards.json
+│   │   └── provNew.geojson
+│   ├── README.md
+│   ├── algorithms
+│   │   ├── ac3.py
+│   │   ├── backtracking.py
+│   │   ├── forward_checking.py
+│   │   └── min_conflicts.py
+│   ├── assets
+│   │   └── demo.gif
+│   └── main.py
+└── VacuumCleaner
+    ├── Assets
+    │   ├── demo.gif
+    │   ├── dirt.png
+    │   ├── obstacle.png
+    │   └── robot.png
+    ├── README.md
+    ├── algorithms
+    │   ├── A_star.py
+    │   ├── __init__.py
+    │   ├── andorsearch.py
+    │   ├── base.py
+    │   ├── bfs.py
+    │   ├── bfs_early.py
+    │   ├── bfs_nondeterministic.py
+    │   ├── bfs_partial_early.py
+    │   ├── bfs_unobservable.py
+    │   ├── dfs.py
+    │   ├── dfs_early.py
+    │   ├── greedy.py
+    │   ├── ida_star.py
+    │   ├── ids.py
+    │   ├── ids_early.py
+    │   ├── localbeamsearch.py
+    │   ├── randomrestarthillclimbing.py
+    │   ├── simplehillclimbing.py
+    │   ├── simulatedannealing.py
+    │   ├── steepestascenthillclimbing.py
+    │   ├── stochastichillclimbing.py
+    │   └── ucs.py
+    └── main.py
 ```
 
 ## Demo 
-![demo](Assets/demo.gif)
+![demo](./VacuumCleaner/Assets/demo.gif)
+![demo](./ToMauBanDo/assets/demo.gif)
+
 
 ## Installation & Running
 
@@ -107,7 +128,7 @@ cd TriTueNhanTao
 2. Install dependencies:
 
 ```bash
-pip3 install pygame
+pip3 install tkinter
 ```
 
 3. Run the application:
@@ -115,11 +136,3 @@ pip3 install pygame
 ```bash
 python3 main.py
 ```
-
-## How to Use
-
-- **Change Grid Size:** Click on the `M` (Rows) or `N` (Columns) text boxes, type a number (from 2 to 6), and press `Enter` to resize the map.
-- **Draw Obstacles:** Left-click on any empty grid cell to place a gray obstacle (wall). Click again to remove it. *(Note: You cannot place an obstacle on the robot's starting position at (0,0)).*
-- **Generate Dirt:** Click the `RANDOM BUI` button to randomly scatter dirt particles across the map with a 40% probability.
-- **Select Algorithm:** Click the dropdown menu in the top-left corner to choose one of the supported search algorithms.
-- **Run Simulation:** Click the green `RUN` button to execute the algorithm. The path visualizer will show the logs in real-time, and the robot will start moving to clean the grid.
