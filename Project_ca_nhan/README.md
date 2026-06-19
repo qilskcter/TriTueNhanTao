@@ -16,42 +16,42 @@
 
 1. Uninformed Search
 
--  [BFS (Breadth-First Search)](./algorithms/bfs.py)
--  [BFS Early Goal Check](./algorithms/bfs_early.py)
--  [DFS (Depth-First Search)](./algorithms/dfs.py)
--  [DFS Early Goal Check](./algorithms/dfs_early.py)
--  [IDS (Iterative Deepening Search)](./algorithms/ids.py)
--  [IDS Early Goal Check](./algorithms/ids_early.py)
--  [UCS (Uniform Cost Search)](./algorithms/ucs.py)
+-  [BFS (Breadth-First Search)](./VacuumCleaner/algorithms/bfs.py)
+-  [BFS Early Goal Check](./VacuumCleaner/algorithms/bfs_early.py)
+-  [DFS (Depth-First Search)](./VacuumCleaner/algorithms/dfs.py)
+-  [DFS Early Goal Check](./VacuumCleaner/algorithms/dfs_early.py)
+-  [IDS (Iterative Deepening Search)](./VacuumCleaner/algorithms/ids.py)
+-  [IDS Early Goal Check](./VacuumCleaner/algorithms/ids_early.py)
+-  [UCS (Uniform Cost Search)](./VacuumCleaner/algorithms/ucs.py)
 
 2. Informed Search
 
--  [Greedy](./algorithms/greedy.py)
--  [A* (A-star)](./algorithms/A_star.py)
--  [IDA* (IDA-star)](./algorithms/ida_star.py)
+-  [Greedy](./VacuumCleaner/algorithms/greedy.py)
+-  [A* (A-star)](./VacuumCleaner/algorithms/A_star.py)
+-  [IDA* (IDA-star)](./VacuumCleaner/algorithms/ida_star.py)
 
 3. Local Search
 
--  [Simple Hill Climbing](./algorithms/simplehillclimbing.py)
--  [Steepest Ascent Hill Climbing](./algorithms/steepestascenthillclimbing.py)
--  [Stochastic Hill Climbing](./algorithms/stochastichillclimbing.py)
--  [Random Restart Hill Climbing](./algorithms/randomrestarthillclimbing.py)
--  [Local Beam Search](./algorithms/localbeamsearch.py)
--  [Simulate Dannealing](./algorithms/simulatedannealing.py)
+-  [Simple Hill Climbing](./VacuumCleaner/algorithms/simplehillclimbing.py)
+-  [Steepest Ascent Hill Climbing](./VacuumCleaner/algorithms/steepestascenthillclimbing.py)
+-  [Stochastic Hill Climbing](./VacuumCleaner/algorithms/stochastichillclimbing.py)
+-  [Random Restart Hill Climbing](./VacuumCleaner/algorithms/randomrestarthillclimbing.py)
+-  [Local Beam Search](./VacuumCleaner/algorithms/localbeamsearch.py)
+-  [Simulate Dannealing](./VacuumCleaner/algorithms/simulatedannealing.py)
 
 4. Search in Complex Environments
 
--  [Search in Partially Observable Environments](./algorithms/bfs_partial_early.py)
--  [Search in Unobservable Environments](./algorithms/bfs_unobservable.py)
--  [Search in Nondeterministic Environments](./algorithms/bfs_nondeterministic.py)
--  [And Or Graph Search](./algorithms/andorsearch.py)
+-  [Search in Partially Observable Environments](./VacuumCleaner/algorithms/bfs_partial_early.py)
+-  [Search in Unobservable Environments](./VacuumCleaner/algorithms/bfs_unobservable.py)
+-  [Search in Nondeterministic Environments](./VacuumCleaner/algorithms/bfs_nondeterministic.py)
+-  [And Or Graph Search](./VacuumCleaner/algorithms/andorsearch.py)
 
 5. Constraint Satisfaction Problem (CSP)
 
--  [Backtracking](./algorithms/backtracking.py)
--  [Forward-Checking](./algorithms/forward_checking.py)
--  [AC-3](./algorithms/ac3.py)
--  [Min Conflict](./algorithms/min_conflicts.py)
+-  [Backtracking](./ToMauBanDo/algorithms/backtracking.py)
+-  [Forward-Checking](./ToMauBanDo/algorithms/forward_checking.py)
+-  [AC-3](./ToMauBanDo/algorithms/ac3.py)
+-  [Min Conflict](./ToMauBanDo/algorithms/min_conflicts.py)
 
 ## Requirements
 
