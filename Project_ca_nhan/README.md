@@ -11,6 +11,7 @@
 ## Source Code
 - [Vacuum Cleaner](./VacuumCleaner/)
 - [Tô Màu Bản Đồ](./ToMauBanDo/)
+- [Tic-tac-toe](./TicTacToe/)
 
 ## Supported Algorithms
 
