@@ -53,6 +53,13 @@
 -  [AC-3](./ToMauBanDo/algorithms/ac3.py)
 -  [Min Conflict](./ToMauBanDo/algorithms/min_conflicts.py)
 
+6. Adversarial Search
+
+-  [Minimax](./TicTacToe/algorithms/minimax.py)
+-  [Alpha-Beta](./TicTacToe/algorithms/alphabeta.py)
+-  [Expectimax](./TicTacToe/algorithms/expectimax.py)
+
+
 ## Requirements
 
 - Python 3.x
@@ -62,9 +69,19 @@
 ## Project Structure
 
 ```
-Project_ca_nhan
+Project_Ca_Nhan
 ├── LinkGithub.txt
 ├── README.md
+├── TicTacToe
+│   ├── README.md
+│   ├── algorithms
+│   │   ├── alphabeta.py
+│   │   ├── expectimax.py
+│   │   ├── minimax.py
+│   │   └── utils.py
+│   ├── asset
+│   │   └── demo.gif
+│   └── main.py
 ├── ToMauBanDo
 │   ├── DATA
 │   │   ├── Wards.json
@@ -114,7 +131,7 @@ Project_ca_nhan
 ## Demo 
 ![demo](./VacuumCleaner/Assets/demo.gif)
 ![demo](./ToMauBanDo/assets/demo.gif)
-
+![demo](./TicTacToe/asset/demo.gif)
 
 ## Installation & Running
 
@@ -129,6 +146,7 @@ cd TriTueNhanTao
 
 ```bash
 pip3 install tkinter
+pip3 install pygame
 ```
 
 3. Run the application:
