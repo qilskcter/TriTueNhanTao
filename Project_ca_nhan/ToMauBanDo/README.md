@@ -1,7 +1,7 @@
 # <center>To Mau Ban Do</center>
 
 ![Python](https://img.shields.io/badge/Python-3.14.3-3776AB?logo=python&logoColor=white)
-![Status](https://img.shields.io/badge/Status-UPDATING-yellow)
+![Status](https://img.shields.io/badge/Status-COMPLETE-green)
 
 ## Github Link
 

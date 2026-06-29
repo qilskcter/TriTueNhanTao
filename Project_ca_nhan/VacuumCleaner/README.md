@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.9.6-3776AB?logo=python&logoColor=white)
 ![Pygame](https://img.shields.io/badge/Pygame-355938?logo=pygame&logoColor=white)
-![Status](https://img.shields.io/badge/Status-UPDATING-yellow)
+![Status](https://img.shields.io/badge/Status-COMPLETE-green)
 
 ## Github Link
 
